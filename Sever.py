@@ -7,7 +7,6 @@ import time
 class Server:
     Clients = []
     logs = {}
-
     def __init__(self,host,port):
         self.host = host
         self.port = port
@@ -56,6 +55,10 @@ class Server:
             # msg = '  zhangsan lisi'
             client_sock.send(msg.encode('utf-8'))
 
+
+
+
+
             client_thread = threading.Thread(target=self.wait_for_user_nickname,args=[client_sock])
             client_thread.start()
 
@@ -66,6 +69,7 @@ class Server:
         for msgid in Server.logs.keys():
             msg = Server.logs[msgid]
             client_sock.sendall(msg.encode('ISO-8859-1'))
+
 
         client = Client(client_sock,new_user_id)
         Server.Clients.append(client)
@@ -95,11 +99,10 @@ class Client:
 
             Server.logs[Client.msgID] = msg
 
-            if msg[0] == 'D':
+            if msg[0] in ['D','R']:
                 self.broadcast2Clients(msg)
 
             Client.msgID += 1
-
             pass
 
     def broadcast2Clients(self,msg):

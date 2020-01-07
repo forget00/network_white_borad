@@ -3,15 +3,36 @@ from tkinter import *
 class WhiteBoard:
     drawing_tool = "line"
     # Here we have the dictionary with the used colors to paint!
-    Colors = {'b': 'blue', 'r': 'red', 'g': 'green', 'o': 'orange', 'y': 'yellow', 'c': 'cyan', 'p': 'purple1',
-              'd': 'black', 's': 'snow'}
+    # Colors = {'b': 'blue', 'r': 'red', 'g': 'green', 'o': 'orange', 'y': 'yellow', 'c': 'cyan', 'p': 'purple1',
+    #           'd': 'black', 's': 'snow'}
+    line_width = 2
+
+    def draw_line(self, msgLst):
+        startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
+        color = msgLst[5]
+        self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width)
+
+    def draw_from_msg(self,msg):
+        msgLst = msg.split()
+        draw_type = msgLst[0]
+        if draw_type == 'D':
+            self.draw_line(msgLst)
+        else:
+            pass
 
     def __init__(self):
+        self.color = 'b'
         self.init_whiteboard()
         self._init_item_button()
         self._init_color_button()
+        self.init_drawing_area()
+
+    def show_window(self):
         self.myWhiteBoard.mainloop()
-        self.color = 'b'
+
+    def init_drawing_area(self):
+        self.drawing_area = Canvas(self.myWhiteBoard,width = 1000,height = 700,bg='white')
+        self.drawing_area.place(y=50)
 
     def init_whiteboard(self):
         self.myWhiteBoard = Tk()
